@@ -1,0 +1,452 @@
+/* ============= 个人工作台 - 全局补充样式 ============= */
+
+:root {
+  --shadow-glow: 0 0 0 1px rgba(76,201,240,.35), 0 0 28px -4px rgba(76,201,240,.55);
+}
+
+/* ============= 主题自定义（由站点设置覆盖 CSS 变量） ============= */
+.bg-brand   { background-color: var(--brand) !important; }
+.bg-accent  { background-color: var(--accent) !important; }
+.bg-highlight { background-color: var(--highlight) !important; }
+.text-brand { color: var(--brand) !important; }
+.text-accent { color: var(--accent) !important; }
+.text-highlight { color: var(--highlight) !important; }
+.border-brand { border-color: var(--brand) !important; }
+.hover\:bg-brand:hover { background-color: var(--brand) !important; }
+.hover\:text-brand:hover { color: var(--brand) !important; }
+.rounded-card { border-radius: var(--radius-card) !important; }
+
+/* ============= 子导航 ============= */
+.subnav-link { position: relative; }
+.subnav-link.active { color: var(--brand); }
+.subnav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px; bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand);
+}
+.dark .subnav-link.active { color: var(--accent); }
+.dark .subnav-link.active::after { background: var(--accent); }
+
+/* 无滚动条 */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* 滚动条 */
+.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
+.dark ::-webkit-scrollbar-track { background: #0F1420; }
+.dark ::-webkit-scrollbar-thumb { background: #273044; border-radius: 8px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #4361EE; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #F8FAFC; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft Yahei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 基础卡片悬浮 */
+.board-card,
+.ql-card,
+.sc-btn { transition: transform .25s ease, box-shadow .25s ease; }
+
+/* 工作台面板折叠按钮 */
+#toggleWorkbench.is-collapsed { background: rgba(67,97,238,.1); color: #4361EE; }
+
+/* Markdown 文档 */
+.prose { color: inherit; line-height: 1.7; }
+.prose h1, .prose h2, .prose h3 { font-weight: 600; margin-top: 1.2em; margin-bottom: .5em; }
+.prose h1 { font-size: 1.4em; }
+.prose h2 { font-size: 1.2em; }
+.prose h3 { font-size: 1.05em; }
+.prose p { margin: .6em 0; }
+.prose ul, .prose ol { padding-left: 1.4em; margin: .6em 0; }
+.prose li { margin: .25em 0; }
+.prose code { background: rgba(67,97,238,.12); color: #4361EE; padding: .15em .35em; border-radius: 4px; font-size: .92em; }
+.prose pre { background: rgba(0,0,0,.05); padding: 12px; border-radius: 8px; overflow-x: auto; }
+.dark .prose code { background: rgba(67,97,238,.18); color: #E2E8F0; }
+.dark .prose pre { background: rgba(255,255,255,.05); }
+.dark .prose strong { color: #E2E8F0; }
+.prose blockquote { border-left: 3px solid #4361EE; padding-left: 1em; color: #64748B; margin: .8em 0; }
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ============= 欢迎横幅背景 ============= */
+.welcome-banner .welcome-bg {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(76,201,240,.18), transparent 50%),
+    linear-gradient(135deg, rgba(67,97,238,.10), rgba(76,201,240,.08));
+  border: 1px solid rgba(76,201,240,.28);
+  backdrop-filter: blur(12px);
+}
+.dark .welcome-banner .welcome-bg {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(76,201,240,.22), transparent 55%),
+    linear-gradient(135deg, rgba(67,97,238,.18), rgba(76,201,240,.12));
+  border-color: rgba(76,201,240,.32);
+}
+
+/* ============= 八大系统玻璃光效 ============= */
+.glass-card {
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(76,201,240,.30);
+  border-radius: var(--radius-card);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.35),
+    0 0 0 1px rgba(76,201,240,.18),
+    0 0 22px -10px rgba(76,201,240,.6),
+    0 8px 24px -12px rgba(15,20,32,.18);
+  backdrop-filter: blur(12px);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.dark .glass-card {
+  background: rgba(26,34,51,.55);
+  border-color: rgba(76,201,240,.45);
+  box-shadow:
+    inset 0 0 0 1px rgba(76,201,240,.10),
+    0 0 0 1px rgba(76,201,240,.25),
+    0 0 28px -8px rgba(76,201,240,.55),
+    0 8px 28px -10px rgba(0,0,0,.55);
+}
+.glass-card:hover {
+  border-color: rgba(76,201,240,.7);
+  box-shadow:
+    inset 0 0 0 1px rgba(76,201,240,.35),
+    0 0 0 1px rgba(76,201,240,.4),
+    0 0 32px -4px rgba(76,201,240,.75),
+    0 12px 30px -10px rgba(0,0,0,.45);
+}
+.glass-icon {
+  background: rgba(var(--c1), .12);
+  border: 1px solid rgba(var(--c1), .30);
+  backdrop-filter: blur(8px);
+}
+.dark .glass-icon {
+  background: rgba(var(--c1), .20);
+  border-color: rgba(var(--c1), .45);
+}
+
+/* ============= 成品展示入口：6 圆形按钮（透明科技玻璃·全主题） ============= */
+.sc-circle {
+  position: relative;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,.55), transparent 65%),
+    radial-gradient(circle at 70% 75%, rgba(255,255,255,.18), transparent 60%),
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--sc) 22%, transparent),
+      color-mix(in srgb, var(--sc) 38%, transparent));
+  border: 1.5px solid color-mix(in srgb, var(--sc) 55%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.25),
+    inset 0 -12px 24px -16px var(--sc),
+    0 8px 22px -8px color-mix(in srgb, var(--sc) 50%, transparent),
+    0 0 22px -6px color-mix(in srgb, var(--sc) 45%, transparent);
+}
+.sc-circle::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,.55), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: .65;
+}
+.sc-circle::after {
+  content: '';
+  position: absolute;
+  width: 38%;
+  height: 38%;
+  top: 10%;
+  left: 16%;
+  border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  filter: blur(7px);
+  pointer-events: none;
+  z-index: 0;
+}
+.sc-circle svg {
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--sc) 80%, transparent));
+}
+.sc-btn:hover .sc-circle {
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.5),
+    0 14px 28px -8px color-mix(in srgb, var(--sc) 80%, transparent),
+    0 0 28px -2px color-mix(in srgb, var(--sc) 70%, transparent);
+  transform: translateY(-1px);
+}
+.sc-btn:hover .sc-circle svg {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--sc) 100%, transparent));
+}
+
+/* ============= 3D 词云 ============= */
+.wordcloud-wrap {
+  position: relative;
+  perspective: 700px;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 正方形 */
+  overflow: visible;
+}
+@media (max-width: 640px) {
+  .wordcloud-wrap { perspective: 520px; padding-bottom: 110%; }
+}
+/* 3D 词云球体：深色模式黑色半透明（默认）；浅色模式跟随浅色主题（下方覆盖） */
+.wordcloud-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.12), transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(18,24,40,.66), rgba(8,12,24,.46) 66%, rgba(8,12,24,0) 100%);
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.55),
+    inset 0 0 0 1px rgba(76,201,240,.40),
+    0 0 42px rgba(0,0,0,.28);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: none;
+  animation: cloud-pulse 6s ease-in-out infinite;
+}
+@keyframes cloud-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .85; transform: scale(1.02); }
+}
+
+/* 浅色主题：3D 词云跟随浅色主题 —— 浅蓝透明科技球体 + 霓虹标签 */
+html:not(.dark) .wordcloud-bg {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,.85), rgba(120,180,255,.45) 38%, rgba(76,124,255,.32) 65%, rgba(76,124,255,0) 82%),
+    radial-gradient(circle at 70% 75%, rgba(255,255,255,.6), transparent 55%);
+  box-shadow:
+    inset 0 0 60px rgba(76,124,255,.25),
+    inset 0 0 0 1px rgba(76,124,255,.55),
+    inset 0 0 120px rgba(255,255,255,.45),
+    0 0 40px rgba(67,97,238,.28);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.wordcloud-stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.wc-anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  /* transform: rotateY(..) rotateX(..) translateZ(radius) JS 设置 */
+}
+.wc-word {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-shadow: 0 0 10px currentColor, 0 0 2px rgba(0,0,0,.35);
+  user-select: none;
+  cursor: pointer;
+  backface-visibility: hidden;       /* 背面的单词自动隐藏，像真实地球仪 */
+  -webkit-backface-visibility: hidden;
+  transition: transform .3s ease, opacity .3s ease, text-shadow .3s ease;
+}
+.wc-word:hover {
+  text-shadow: 0 0 16px currentColor, 0 0 4px currentColor;
+}
+
+/* 词云所在父卡片给更高高度（避免被压扁） */
+.wordcloud-wrap {
+  min-height: 320px;
+}
+
+/* ============= 文档分享按钮（点击复制链接） ============= */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .4rem .85rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+  background: rgba(67,97,238,.10);
+  border: 1px solid rgba(67,97,238,.30);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.share-btn::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.share-btn:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  box-shadow: 0 0 16px -3px rgba(67,97,238,.6);
+}
+.share-btn:hover::before { background: #fff; box-shadow: 0 0 8px #fff; }
+
+/* ============= 浅色主题科技感 ============= */
+/* 浅色模式下给页面铺一层极淡的科技网格 + 角落辉光，不遮挡内容 */
+html:not(.dark) body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(67,97,238,.07), transparent 42%),
+    radial-gradient(circle at 88% 4%, rgba(76,201,240,.07), transparent 46%),
+    linear-gradient(rgba(67,97,238,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(67,97,238,.045) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 34px 34px, 34px 34px;
+}
+
+/* 标签在黑色透明球体上统一使用霓虹辉光（全主题一致） */
+html:not(.dark) .wc-word {
+  text-shadow:
+    0 0 12px currentColor,
+    0 0 5px currentColor,
+    0 0 2px rgba(255,255,255,.9),
+    0 0 1px rgba(255,255,255,.9);
+  font-weight: 800;
+}
+
+/* ============= 海报 SLIDE ============= */
+.poster-slide {
+  background: linear-gradient(135deg, rgba(67,97,238,.12), rgba(76,201,240,.08));
+}
+.dark .poster-slide {
+  background: linear-gradient(135deg, rgba(67,97,238,.20), rgba(76,201,240,.12));
+}
+.poster-slide-item {
+  will-change: opacity;
+}
+@media (max-width: 640px) {
+  .poster-nav { width: 36px !important; height: 36px !important; }
+}
+
+/* ============= 移动端 FAB 适配 ============= */
+@media (max-width: 640px) {
+  #fabEdit { width: 48px; height: 48px; bottom: 16px; right: 16px; }
+}
+
+/* ============= 全站搜索 ============= */
+#siteSearch:focus,
+#siteSearchMobile:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
+  background: color-mix(in srgb, var(--brand) 4%, transparent);
+}
+
+/* ============= 文档卡（横版 · 2:1 · 轮播） ============= */
+.doc-carousel { position: relative; }
+.doc-viewport { overflow: hidden; }
+.doc-track {
+  display: flex;
+  gap: 16px;
+  transition: transform .55s cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+}
+.doc-card {
+  flex: 0 0 calc(50% - 8px);
+  aspect-ratio: 2 / 1;
+  will-change: transform;
+}
+@media (max-width: 640px) {
+  .doc-card { flex: 0 0 100%; }
+}
+.doc-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, transparent 70%, color-mix(in srgb, var(--brand) 8%, transparent) 100%);
+  opacity: 0; transition: opacity .25s;
+}
+.doc-card:hover::after { opacity: 1; }
+
+/* 左右翻页按钮（与海报一致） */
+.doc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.40);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background .2s;
+  z-index: 20;
+}
+.doc-nav:hover { background: rgba(0,0,0,.58); }
+.doc-nav[data-dir="prev"] { left: 6px; }
+.doc-nav[data-dir="next"] { right: 6px; }
+@media (max-width: 640px) {
+  .doc-nav { width: 34px; height: 34px; }
+}
+.doc-dots { display: flex; justify-content: center; gap: 6px; margin-top: 14px; }
+.doc-dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 35%, transparent);
+  transition: all .25s;
+}
+.doc-dot.active { background: var(--brand); width: 24px; }
+
+/* ============= 主导航下拉（鼠标悬停展开二级） ============= */
+.nav-dropdown-menu {
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+@media (max-width: 768px) {
+  .nav-dropdown-menu { position: static; opacity: 1 !important; display: none; }
+  .nav-dropdown.group-open .nav-dropdown-menu { display: block; }
+}
+
+/* ============= 主导航嵌套编辑 ============= */
+.nav-item-block[draggable="true"] { transition: opacity .2s ease; }
+.nav-item-block .nav-drag { font-size: 14px; line-height: 1; padding: 4px; }
+.nav-item-block .nav-drag:hover { color: var(--brand); }
+
+/* 设置页多行列表的拖动抓手 */
+.crud-item .drag-grip { font-size: 14px; line-height: 1; padding: 4px; transition: color .15s ease; }
+.crud-item .drag-grip:hover { color: var(--brand); }
+.crud-item .drag-grip:active { cursor: grabbing; }
+.crud-item[draggable], .crud-item { transition: border-color .12s ease; }
+.nav-drop-active {
+  outline: 2px dashed var(--brand) !important;
+  outline-offset: -2px;
+  background-color: color-mix(in srgb, var(--brand) 10%, transparent) !important;
+  border-radius: 12px;
+}
+
+/* ============= 主导航下的二级子导航条样式 ============= */
+.subnav-row {
+  max-width: 100%;
+  margin: 0 -4px;
+}
+.subnav-link { font-size: 13px; }

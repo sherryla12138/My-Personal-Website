@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+  <title>个人效率工作台</title>
+  <meta name="description" content="个人综合效率工作台 - 局域网访问">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@13.0.3/marked.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg:       { DEFAULT: '#F8FAFC', dark: '#0F1420' },
+            card:     { DEFAULT: '#FFFFFF', dark: '#1A2233' },
+            brand:    { DEFAULT: '#4361EE' },
+            accent:   { DEFAULT: '#4CC9F0' },
+            highlight:{ DEFAULT: '#22C55E' },
+            text:     { DEFAULT: '#1E293B', dark: '#E2E8F0' },
+            muted:    { DEFAULT: '#64748B' },
+            divider:  { DEFAULT: '#E2E8F0', dark: '#273044' }
+          },
+          borderRadius: { 'card': '16px', 'btn': '12px' },
+          boxShadow: {
+            'card': '0 6px 24px -8px rgba(15,20,32,0.18)',
+            'card-dark': '0 6px 24px -8px rgba(0,0,0,0.5)',
+            'glow-blue': '0 0 28px -6px rgba(76,201,240,.55), 0 0 0 1px rgba(76,201,240,.18)'
+          },
+          fontFamily: {
+            sans: ['system-ui','-apple-system','"Segoe UI"','"PingFang SC"','"Microsoft Yahei"','sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style id="themeVars">
+    :root{
+      --brand: #8044ee;
+      --accent: #4cc9f0;
+      --highlight: #22c55e;
+      --radius-card: 16px;
+    }
+  </style>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-bg dark:bg-bg-dark text-text dark:text-text-dark transition-colors">
+
+<!-- ============ 顶部欢迎横幅（在导航栏上方） ============ -->
+<section class="welcome-banner">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+    <div class="rounded-card p-6 sm:p-8 text-text dark:text-text-dark shadow-card dark:shadow-card-dark relative overflow-hidden welcome-bg">
+      <div class="absolute -right-12 -top-12 w-56 h-56 rounded-full bg-brand/15 dark:bg-white/5 blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-32 -bottom-20 w-72 h-72 rounded-full bg-accent/15 dark:bg-accent/10 blur-3xl pointer-events-none"></div>
+      <div class="relative flex items-start gap-4">
+        
+          <span class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-card overflow-hidden bg-bg dark:bg-bg-dark/40 flex items-center justify-center shadow-glow-blue welcome-avatar">
+            <img src="uploads/1787993504865-m273sm.jpeg" alt="avatar" class="w-full h-full object-cover">
+          </span>
+        
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">欢迎来到梗脖大鹅的个人网站</h1>
+          <p class="mt-1 text-muted text-sm sm:text-base">Efficiency Workbench · 一站式办公协同</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 顶部导航 ============ -->
+<header class="sticky top-0 z-40 backdrop-blur-md bg-bg/85 dark:bg-bg-dark/85 border-b border-divider dark:border-divider-dark">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 gap-3">
+      <!-- 左侧全站搜索栏（原 Logo 位置） -->
+      <div class="flex items-center gap-2 min-w-0 flex-1 max-w-[420px]">
+        <div class="relative w-full">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="siteSearch" type="search" placeholder="搜索全站 · 八大系统 / 快捷链接 / 文档 / 工作…" class="w-full pl-9 pr-9 py-2 rounded-full bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-sm text-text dark:text-text-dark placeholder:text-muted focus:border-brand outline-none transition">
+          <button id="siteSearchClear" type="button" class="hidden absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full hover:bg-card dark:hover:bg-card-dark text-muted hover:text-text dark:hover:text-text-dark flex items-center justify-center" title="清空">×</button>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-1 shrink-0">
+        
+          
+            <a href="/"
+               class="nav-link px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark transition"
+               data-nav="1"
+               data-searchable="工作台">
+              工作台
+            </a>
+          
+        
+          
+            <a href="#"
+               class="nav-link px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark transition"
+               data-nav="8"
+               data-searchable="最近活动">
+              最近活动
+            </a>
+          
+        
+          
+            <div class="nav-dropdown relative group">
+              <button class="nav-link nav-link-drop px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark transition flex items-center gap-1" data-nav="2">
+                八大盘
+                <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="nav-dropdown-menu absolute left-0 top-full mt-2 min-w-[180px] rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark py-1.5 hidden group-hover:block opacity-0 group-hover:opacity-100 transition z-50">
+                
+                  <a href="#boards"
+                     class="nav-dropdown-item block px-4 py-2 text-sm text-muted hover:text-text dark:hover:text-text-dark hover:bg-bg dark:hover:bg-bg-dark/50 transition"
+                     data-searchable="八大盘 数据看板">
+                    数据看板
+                  </a>
+                
+                  <a href="#boards"
+                     class="nav-dropdown-item block px-4 py-2 text-sm text-muted hover:text-text dark:hover:text-text-dark hover:bg-bg dark:hover:bg-bg-dark/50 transition"
+                     data-searchable="八大盘 视觉生成">
+                    视觉生成
+                  </a>
+                
+              </div>
+            </div>
+          
+        
+          
+            <a href="#workbench"
+               class="nav-link px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark transition"
+               data-nav="3"
+               data-searchable="工具箱">
+              工具箱
+            </a>
+          
+        
+          
+            
+          
+        
+          
+            <a href="#docs"
+               class="nav-link px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark transition"
+               data-nav="4"
+               data-searchable="文档">
+              文档
+            </a>
+          
+        
+      </nav>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="toggleTheme" class="w-10 h-10 rounded-btn hover:bg-card dark:hover:bg-card-dark flex items-center justify-center text-muted hover:text-text dark:hover:text-text-dark transition" title="切换主题">
+          <svg class="w-5 h-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="w-5 h-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+
+        
+
+        <button id="burger" class="md:hidden w-10 h-10 rounded-btn hover:bg-card dark:hover:bg-card-dark flex items-center justify-center text-muted hover:text-text dark:hover:text-text-dark">
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden border-t border-divider dark:border-divider-dark pb-4">
+      <div class="px-3 pt-3 pb-2">
+        <input id="siteSearchMobile" type="search" placeholder="搜索全站…" class="w-full pl-9 pr-3 py-2 rounded-full bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-sm">
+      </div>
+      
+        <div>
+          <a href="/" class="block px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">工作台</a>
+          
+        </div>
+      
+        <div>
+          <a href="#" class="block px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">最近活动</a>
+          
+        </div>
+      
+        <div>
+          <a href="#boards" class="block px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">八大盘</a>
+          
+            <div class="pl-5 border-l border-divider dark:border-divider-dark ml-3 mt-1 space-y-0.5">
+              
+                <a href="#boards" class="block px-3 py-1.5 rounded-btn text-sm text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">数据看板</a>
+              
+                <a href="#boards" class="block px-3 py-1.5 rounded-btn text-sm text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">视觉生成</a>
+              
+            </div>
+          
+        </div>
+      
+        <div>
+          <a href="#workbench" class="block px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">工具箱</a>
+          
+        </div>
+      
+        <div>
+          
+          
+        </div>
+      
+        <div>
+          <a href="#docs" class="block px-3 py-2 rounded-btn text-sm font-medium text-muted hover:text-text dark:hover:text-text-dark hover:bg-card dark:hover:bg-card-dark">文档</a>
+          
+        </div>
+      
+      
+    </div>
+  </div>
+</header>
+
+<!-- ============ 海报 + 通知 ============ -->
+<section id="hero" class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+  <!-- ============ 海报 SLIDE（左 2/3） ============ -->
+  <div class="lg:col-span-2">
+    <div id="posterSlide" class="poster-slide relative overflow-hidden rounded-card border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark"
+         data-interval="4"
+         style="aspect-ratio: 16/7;">
+      
+        <div class="poster-slide-item absolute inset-0 transition-opacity duration-700 ease-in-out "
+             data-idx="0">
+          <a href="#" class="block w-full h-full">
+            <img class="poster-img w-full h-full object-cover"
+                 alt="AI硬件"
+                 data-landscape="uploads/1787991734033-9cysby.png"
+                 data-portrait="img/poster-1.jpg"
+                 data-fallback="img/poster-1.jpg">
+          </a>
+        </div>
+      
+        <div class="poster-slide-item absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none"
+             data-idx="1">
+          <a href="#" class="block w-full h-full">
+            <img class="poster-img w-full h-full object-cover"
+                 alt="爆品开发"
+                 data-landscape="uploads/1787991813606-bty3ib.png"
+                 data-portrait="img/poster-2.jpg"
+                 data-fallback="img/poster-2.jpg">
+          </a>
+        </div>
+      
+
+      <!-- 左右翻页按钮 -->
+      <button class="poster-nav absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/55 text-white flex items-center justify-center backdrop-blur-sm transition" data-dir="prev" title="上一张">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="poster-nav absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/55 text-white flex items-center justify-center backdrop-blur-sm transition" data-dir="next" title="下一张">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- 圆点指示器 -->
+      
+        <div class="absolute bottom-2 sm:bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+          
+            <button class="poster-dot w-2 h-2 rounded-full transition-all bg-white w-6" data-idx="0" title="AI硬件"></button>
+          
+            <button class="poster-dot w-2 h-2 rounded-full transition-all bg-white/45 hover:bg-white/75" data-idx="1" title="爆品开发"></button>
+          
+        </div>
+      
+    </div>
+  </div>
+  <!-- ============ 通知公告（右 1/3） ============ -->
+  <div class="lg:col-span-1">
+    <div class="rounded-card bg-card dark:bg-card-dark shadow-card dark:shadow-card-dark border border-divider dark:border-divider-dark flex flex-col h-full">
+      <div class="px-5 py-3 border-b border-divider dark:border-divider-dark flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-highlight animate-pulse"></span>
+          <h3 class="font-semibold text-text dark:text-text-dark">通知栏</h3>
+        </div>
+        <span class="text-xs px-2 py-0.5 rounded-btn bg-accent/15 text-accent">3 条</span>
+      </div>
+      <ul class="flex-1 overflow-auto divide-y divide-divider dark:divide-divider-dark">
+        
+        
+          <li class="px-5 py-3 hover:bg-bg dark:hover:bg-bg-dark/30 transition">
+            
+              <div class="flex items-start gap-2">
+                <span class="mt-1 inline-block w-1.5 h-1.5 rounded-full
+                   bg-accent"></span>
+                <div class="flex-1">
+                  <div class="text-sm font-medium text-text dark:text-text-dark">欢迎使用</div>
+                  <div class="text-xs text-muted mt-0.5 line-clamp-2">这是一个全新的个人效率工作台，进入管理后台编辑全部内容。</div>
+                </div>
+              </div>
+            
+          </li>
+        
+          <li class="px-5 py-3 hover:bg-bg dark:hover:bg-bg-dark/30 transition">
+            
+              <div class="flex items-start gap-2">
+                <span class="mt-1 inline-block w-1.5 h-1.5 rounded-full
+                   bg-accent"></span>
+                <div class="flex-1">
+                  <div class="text-sm font-medium text-text dark:text-text-dark">提示</div>
+                  <div class="text-xs text-muted mt-0.5 line-clamp-2">八大业务系统子页面将在后续版本上线。</div>
+                </div>
+              </div>
+            
+          </li>
+        
+          <li class="px-5 py-3 hover:bg-bg dark:hover:bg-bg-dark/30 transition">
+            
+              <div class="flex items-start gap-2">
+                <span class="mt-1 inline-block w-1.5 h-1.5 rounded-full
+                   bg-accent"></span>
+                <div class="flex-1">
+                  <div class="text-sm font-medium text-text dark:text-text-dark">快捷访问</div>
+                  <div class="text-xs text-muted mt-0.5 line-clamp-2">已为您接入飞书云文档、Notion 等常用工具。</div>
+                </div>
+              </div>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 八大系统 ============ -->
+<section id="boards" class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10">
+  <div class="flex items-end justify-between mb-4">
+    <div>
+      <h2 class="text-lg sm:text-xl font-semibold">八大系统</h2>
+      <p class="text-sm text-muted mt-0.5">点击进入对应业务系统，子页面持续迭代中</p>
+    </div>
+    <span class="text-xs px-2 py-1 rounded-btn bg-card dark:bg-card-dark text-muted border border-divider dark:border-divider-dark">
+      8 个
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    
+      <a href="#"
+         data-searchable="项目 / 任务 项目排期、任务清单、目标拆解"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 67,97,238; color: #4361EE;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(67,97,238, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">项目 / 任务</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">项目排期、任务清单、目标拆解</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="店铺管理 多店铺商品、订单、库存一站管理"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 16,185,129; color: #10B981;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(16,185,129, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">店铺管理</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">多店铺商品、订单、库存一站管理</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="数据分析 核心指标看板、趋势图表、自动报告"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 76,201,240; color: #4CC9F0;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(76,201,240, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">数据分析</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">核心指标看板、趋势图表、自动报告</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="视觉内容 套图、海报、短视频脚本智能生产"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 244,114,182; color: #F472B6;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(244,114,182, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/>
+                  <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">视觉内容</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">套图、海报、短视频脚本智能生产</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="社媒管理 小红书 / 抖音 / 公众号多账号排期"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 245,158,11; color: #F59E0B;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(245,158,11, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">社媒管理</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">小红书 / 抖音 / 公众号多账号排期</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="工作管理 日报、周报、复盘、待办汇总"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 99,102,241; color: #6366F1;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(99,102,241, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">工作管理</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">日报、周报、复盘、待办汇总</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="知识库 文档、教程、案例资料统一归集"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 14,165,233; color: #0EA5E9;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(14,165,233, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">知识库</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">文档、教程、案例资料统一归集</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+      <a href="#"
+         data-searchable="对外互通 飞书、企微、notion、api 集成中枢"
+         class="glass-card group relative rounded-card p-5 hover:-translate-y-1 transition-all duration-300 overflow-hidden block"
+         style="--c1: 139,92,246; color: #8B5CF6;">
+        <!-- 背景辉光 -->
+        <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-50 group-hover:opacity-80 transition blur-2xl pointer-events-none"
+             style="background: radial-gradient(circle, rgba(139,92,246, .55), transparent 70%);"></div>
+
+        <div class="relative flex flex-col items-center text-center">
+          <!-- 图标 + 角标 -->
+          <div class="relative w-full flex items-center justify-center mb-4" style="min-height: 56px;">
+            <div class="w-14 h-14 rounded-card flex items-center justify-center glass-icon">
+              <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                
+                  <path d="M12 2v6M9 2v6m12 6v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m5 4v2"/><path d="M9 18h6"/>
+                
+              </svg>
+            </div>
+            
+          </div>
+
+          <h3 class="font-semibold text-text dark:text-text-dark text-base">对外互通</h3>
+          <p class="mt-1.5 text-xs text-muted line-clamp-2 min-h-[2.5em]">飞书、企微、Notion、API 集成中枢</p>
+
+          <div class="mt-3 inline-flex items-center gap-1 text-xs opacity-80 group-hover:opacity-100">
+            <span>进入</span>
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    
+  </div>
+</section>
+
+<!-- ============ 工作台面板 + 3D 词云 ============ -->
+<section id="workbench" class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+
+  <!-- 左：可折叠工作台（快捷链接 / 工作经历 / 成品展示） -->
+  <div class="lg:col-span-2 space-y-4">
+
+    <!-- 1. 快捷链接 -->
+    <div class="rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-text dark:text-text-dark">快捷跳转</h3>
+        <span class="text-xs px-2 py-0.5 rounded-btn bg-brand/15 text-brand">常用工具</span>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        
+          <a href="https://docs.feishu.cn" target="_blank"
+             data-searchable="飞书云文档"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">飞书云文档</span>
+          </a>
+        
+          <a href="https://calendar.feishu.cn" target="_blank"
+             data-searchable="飞书日历"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">飞书日历</span>
+          </a>
+        
+          <a href="https://www.notion.so" target="_blank"
+             data-searchable="notion"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">Notion</span>
+          </a>
+        
+          <a href="https://www.doubao.com" target="_blank"
+             data-searchable="豆包"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">豆包</span>
+          </a>
+        
+          <a href="#" target="_self"
+             data-searchable="workbuddy"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">WorkBuddy</span>
+          </a>
+        
+          <a href="#" target="_self"
+             data-searchable="搜索"
+             class="ql-card group flex items-center gap-2 px-3 py-2.5 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark hover:border-brand hover:-translate-y-0.5 transition">
+            <span class="w-8 h-8 rounded-btn bg-brand/10 text-brand flex items-center justify-center shrink-0">
+              
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              
+            </span>
+            <span class="text-sm truncate text-text dark:text-text-dark">搜索</span>
+          </a>
+        
+        
+      </div>
+    </div>
+
+    <!-- 2. 工作经历（单卡切换 · 加大展示） -->
+    <div class="rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-text dark:text-text-dark">工作经历</h3>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2 py-0.5 rounded-btn bg-accent/15 text-accent"><span id="expIndex">1</span> / 4</span>
+          <button id="expPrev" class="w-7 h-7 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-muted hover:text-brand">‹</button>
+          <button id="expNext" class="w-7 h-7 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-muted hover:text-brand">›</button>
+        </div>
+      </div>
+
+      <div id="expStage" class="relative">
+        
+          <article class="exp-card  rounded-card bg-gradient-to-br from-bg to-card dark:from-bg-dark/60 dark:to-card-dark border border-divider dark:border-divider-dark p-5 sm:p-6"
+                   data-idx="0">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h4 class="text-lg sm:text-xl font-semibold text-text dark:text-text-dark">产品经理</h4>
+                <div class="mt-1 text-sm text-muted">
+                  <span class="text-text dark:text-text-dark font-medium">某互联网公司</span> · 2022 - 至今
+                </div>
+              </div>
+              
+                <span class="text-xs px-2.5 py-1 rounded-btn bg-brand/15 text-brand shrink-0 font-medium">产品</span>
+              
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-medium text-muted mb-1.5 uppercase tracking-wide">工作内容</div>
+              <p class="text-sm sm:text-base text-text dark:text-text-dark leading-relaxed whitespace-pre-line">从 0 到 1 负责多条业务线的产品设计与功能迭代，沉淀了完整的需求收集 → 方案设计 → 上线验证流程。</p>
+            </div>
+
+            
+              <div class="mt-4">
+                <div class="text-xs font-medium text-muted mb-2 uppercase tracking-wide">工作技能</div>
+                <div class="flex flex-wrap gap-2">
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">Axure</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">飞书</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">SQL</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">数据分析</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">跨部门协作</span>
+                  
+                </div>
+              </div>
+            
+          </article>
+        
+          <article class="exp-card hidden rounded-card bg-gradient-to-br from-bg to-card dark:from-bg-dark/60 dark:to-card-dark border border-divider dark:border-divider-dark p-5 sm:p-6"
+                   data-idx="1">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h4 class="text-lg sm:text-xl font-semibold text-text dark:text-text-dark">电商运营</h4>
+                <div class="mt-1 text-sm text-muted">
+                  <span class="text-text dark:text-text-dark font-medium">MCN 工作室</span> · 2020 - 2022
+                </div>
+              </div>
+              
+                <span class="text-xs px-2.5 py-1 rounded-btn bg-brand/15 text-brand shrink-0 font-medium">运营</span>
+              
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-medium text-muted mb-1.5 uppercase tracking-wide">工作内容</div>
+              <p class="text-sm sm:text-base text-text dark:text-text-dark leading-relaxed whitespace-pre-line">多店铺商品运营 / 活动策划 / 数据复盘，积累了私域 + 公域运营经验。</p>
+            </div>
+
+            
+              <div class="mt-4">
+                <div class="text-xs font-medium text-muted mb-2 uppercase tracking-wide">工作技能</div>
+                <div class="flex flex-wrap gap-2">
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">抖店</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">千川</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">小红书</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">Excel函数</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">数据分析</span>
+                  
+                </div>
+              </div>
+            
+          </article>
+        
+          <article class="exp-card hidden rounded-card bg-gradient-to-br from-bg to-card dark:from-bg-dark/60 dark:to-card-dark border border-divider dark:border-divider-dark p-5 sm:p-6"
+                   data-idx="2">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h4 class="text-lg sm:text-xl font-semibold text-text dark:text-text-dark">视觉设计</h4>
+                <div class="mt-1 text-sm text-muted">
+                  <span class="text-text dark:text-text-dark font-medium">设计工作室</span> · 2018 - 2020
+                </div>
+              </div>
+              
+                <span class="text-xs px-2.5 py-1 rounded-btn bg-brand/15 text-brand shrink-0 font-medium">设计</span>
+              
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-medium text-muted mb-1.5 uppercase tracking-wide">工作内容</div>
+              <p class="text-sm sm:text-base text-text dark:text-text-dark leading-relaxed whitespace-pre-line">品牌设计 / 电商详情页 / 物料海报制作，熟悉主流视觉工具与流程。</p>
+            </div>
+
+            
+              <div class="mt-4">
+                <div class="text-xs font-medium text-muted mb-2 uppercase tracking-wide">工作技能</div>
+                <div class="flex flex-wrap gap-2">
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">PS</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">AI</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">C4D</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">排版</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">色彩</span>
+                  
+                </div>
+              </div>
+            
+          </article>
+        
+          <article class="exp-card hidden rounded-card bg-gradient-to-br from-bg to-card dark:from-bg-dark/60 dark:to-card-dark border border-divider dark:border-divider-dark p-5 sm:p-6"
+                   data-idx="3">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h4 class="text-lg sm:text-xl font-semibold text-text dark:text-text-dark">应届毕业生</h4>
+                <div class="mt-1 text-sm text-muted">
+                  <span class="text-text dark:text-text-dark font-medium">某高校</span> · 2014 - 2018
+                </div>
+              </div>
+              
+                <span class="text-xs px-2.5 py-1 rounded-btn bg-brand/15 text-brand shrink-0 font-medium">求学</span>
+              
+            </div>
+
+            <div class="mt-4">
+              <div class="text-xs font-medium text-muted mb-1.5 uppercase tracking-wide">工作内容</div>
+              <p class="text-sm sm:text-base text-text dark:text-text-dark leading-relaxed whitespace-pre-line">信息管理专业，业余玩运营和设计，建立了属于自己的工作流。</p>
+            </div>
+
+            
+              <div class="mt-4">
+                <div class="text-xs font-medium text-muted mb-2 uppercase tracking-wide">工作技能</div>
+                <div class="flex flex-wrap gap-2">
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">CET-6</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">Office</span>
+                  
+                    <span class="text-xs px-2.5 py-1 rounded-btn bg-bg dark:bg-bg-dark/40 border border-divider dark:border-divider-dark text-text dark:text-text-dark">社团管理</span>
+                  
+                </div>
+              </div>
+            
+          </article>
+        
+        
+      </div>
+    </div>
+
+    <!-- 3. 成品展示入口（6 个圆形按钮 · 两行三列） -->
+    <div class="rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-text dark:text-text-dark">成品展示入口</h3>
+        <span class="text-xs px-2 py-0.5 rounded-btn bg-amber-500/15 text-amber-500">6 大类</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 sm:gap-6">
+        
+          <a href="#"
+             data-searchable="多媒体"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #F472B6;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">多媒体</span>
+          </a>
+        
+          <a href="#"
+             data-searchable="网页/程序"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #4CC9F0;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">网页/程序</span>
+          </a>
+        
+          <a href="#"
+             data-searchable="设计视觉"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #8B5CF6;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/>
+                  <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">设计视觉</span>
+          </a>
+        
+          <a href="#"
+             data-searchable="文案写作"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #F59E0B;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">文案写作</span>
+          </a>
+        
+          <a href="#"
+             data-searchable="互动游戏"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #10B981;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <rect x="2" y="6" width="20" height="12" rx="6"/><circle cx="7" cy="12" r="2"/><line x1="12" y1="9" x2="14" y2="11"/><line x1="14" y1="9" x2="14" y2="13"/><line x1="14" y1="11" x2="18" y2="11"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">互动游戏</span>
+          </a>
+        
+          <a href="#"
+             data-searchable="个人能力"
+             class="sc-btn group flex flex-col items-center gap-2 transition"
+             style="--sc: #4361EE;">
+            <span class="sc-circle relative w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white transition group-hover:-translate-y-1">
+              <svg viewBox="0 0 24 24" class="w-7 h-7 sm:w-8 sm:h-8 relative z-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                
+              </svg>
+            </span>
+            <span class="text-sm sm:text-base font-medium text-text dark:text-text-dark group-hover:text-brand dark:group-hover:text-accent transition">个人能力</span>
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 右：3D 词云 -->
+  <div class="rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark p-5 lg:sticky lg:top-20 self-start">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="font-semibold text-text dark:text-text-dark">技能 · 3D 词云</h3>
+      <span class="text-xs px-2 py-0.5 rounded-btn bg-violet-500/15 text-violet-500">可拖动旋转</span>
+    </div>
+    <div id="wordCloud3d" class="wordcloud-wrap relative w-full" data-words="[&#34;[\&#34;PS\&#34;&#34;,&#34;\&#34;AI\&#34;&#34;,&#34;\&#34;PR\&#34;&#34;,&#34;\&#34;AE\&#34;&#34;,&#34;\&#34;Excel\&#34;&#34;,&#34;\&#34;Excel函数\&#34;&#34;,&#34;\&#34;VBA\&#34;&#34;,&#34;\&#34;Shopify\&#34;&#34;,&#34;\&#34;独立站\&#34;&#34;,&#34;\&#34;Shopify建站\&#34;&#34;,&#34;\&#34;数据分析\&#34;&#34;,&#34;\&#34;数据可视化\&#34;&#34;,&#34;\&#34;数据复盘\&#34;&#34;,&#34;\&#34;GitHub\&#34;&#34;,&#34;\&#34;Git\&#34;&#34;,&#34;\&#34;GitHub库\&#34;&#34;,&#34;CET-4\&#34;&#34;,&#34;\&#34;CET-6\&#34;&#34;,&#34;\&#34;CET-8\&#34;&#34;,&#34;\&#34;文案写作\&#34;&#34;,&#34;\&#34;种草文案\&#34;&#34;,&#34;\&#34;Notion\&#34;&#34;,&#34;\&#34;飞书\&#34;&#34;,&#34;\&#34;Obsidian\&#34;&#34;,&#34;\&#34;私域\&#34;&#34;,&#34;\&#34;公域\&#34;&#34;,&#34;\&#34;增长\&#34;&#34;,&#34;\&#34;复盘\&#34;&#34;,&#34;\&#34;剪辑\&#34;&#34;,&#34;\&#34;调色\&#34;&#34;,&#34;\&#34;排版\&#34;&#34;,&#34;\&#34;色彩\&#34;&#34;,&#34;\&#34;构图\&#34;&#34;,&#34;\&#34;字体\&#34;&#34;,&#34;\&#34;Python\&#34;&#34;,&#34;\&#34;策划\&#34;&#34;,&#34;\&#34;运营\&#34;&#34;,&#34;\&#34;增长\&#34;&#34;,&#34;\&#34;拉新\&#34;]&#34;]">
+      <!-- 词云内部由 main.js 生成 -->
+      <div class="wordcloud-bg absolute inset-0 pointer-events-none"></div>
+      <div id="wordCloud3dStage" class="wordcloud-stage absolute inset-0"></div>
+      <div class="wordcloud-hint absolute bottom-2 left-0 right-0 text-center text-[11px] text-muted/80">技能</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ 底部文档（横版卡片 · 2:1 · 可左右轮播） ============ -->
+<section id="docs" class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10 mb-12">
+  <div class="flex items-end justify-between mb-4">
+    <div>
+      <h2 class="text-lg sm:text-xl font-semibold">文档展示</h2>
+      <p class="text-sm text-muted mt-0.5">从飞书 / 其他站点复制链接导入 · 在本站归集展示</p>
+    </div>
+    <span class="text-xs px-2 py-1 rounded-btn bg-card dark:bg-card-dark text-muted border border-divider dark:border-divider-dark">2 篇</span>
+  </div>
+
+  
+    <div class="doc-carousel" id="docCarousel" data-interval="5">
+      <button class="doc-nav" data-dir="prev" title="上一项" aria-label="上一项">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="doc-viewport">
+        <div class="doc-track">
+          
+            <article class="doc-card group relative rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 flex"
+                     data-doc-id="9"
+                     data-title="AI硬件训练营"
+                     data-tag=""
+                     data-image=""
+                     data-content="# 同一块Vibe Coding AI开发板,会在八节课里不断改变自己的样样子。键盘原有功能是每节课的起点,新的作品是同一种板载能力的另一种用法。"
+                     data-source="https://waytoagi.feishu.cn/wiki/YUfhwbwdUiYXtYkCru7cfKaGnWb"
+                     data-searchable="ai硬件训练营  # 同一块vibe coding ai开发板,会在八节课里不断改变自己的样样子。键盘原有功能是每节课的起点,新的作品是同一种板载能力的另一种用法。">
+              
+              <div class="p-4 flex flex-col gap-2 flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="font-semibold text-sm sm:text-base text-text dark:text-text-dark line-clamp-1">AI硬件训练营</h3>
+                  
+                </div>
+                <div class="text-xs text-muted line-clamp-3 leading-relaxed overflow-hidden flex-1"> 同一块Vibe Coding AI开发板,会在八节课里不断改变自己的样样子。键盘原有功能是每节课的起点,新的作品是同一种板载能力的另一种用法。</div>
+                <div class="mt-auto pt-2 flex items-center justify-between gap-2">
+                  
+                    <span class="text-[11px] text-muted truncate">🔗 waytoagi.feishu.cn/wiki/YUfhwbwdUiYXtYkCru7cfKaGnWb</span>
+                  
+                  <span class="text-xs text-brand opacity-0 group-hover:opacity-100 transition">查看 →</span>
+                </div>
+              </div>
+            </article>
+          
+            <article class="doc-card group relative rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 flex"
+                     data-doc-id="1"
+                     data-title="使用说明"
+                     data-tag="使用"
+                     data-image=""
+                     data-content="# 个人效率工作台使用说明
+
+## 主要功能
+- 顶部欢迎横幅 + 主导航：可在主菜单之间切换
+- 海报 SLIDE 窗口：自动轮播关键作品 / 重要告示
+- 八大业务系统：点击卡片进入（**子页面持续迭代中**）
+- 工作台面板：快捷链接、工作经历、成品展示入口均可编辑
+- 3D 词云：技能图谱循环旋转展示
+- 文档区：本区域用于展示 Markdown 格式说明
+
+## 后台编辑
+- 进入 **** 进入管理后台
+- 或在首页右下角点击悬浮&quot;编辑&quot;按钮进入管理
+- 全部内容支持新增 / 修改 / 删除 / 隐藏，操作实时落库
+
+## 适配
+- 桌面端 / 平板 / 手机响应式自动重排
+- 暗色 / 浅色双模式，首页右上角一键切换
+
+> 该工作台为独立任务工程，不与桌宠项目混合代码，桌宠为后续独立开发。"
+                     data-source=""
+                     data-searchable="使用说明 使用 # 个人效率工作台使用说明
+
+## 主要功能
+- 顶部欢迎横幅 + 主导航：可在主菜单之间切换
+- 海报 slide 窗口：自动轮播关键作品 / 重要告示
+- 八大业务系统：点击卡片进入（**子页面持续迭代中**）
+- 工作台面板：快捷链接、工作经历、成品展示入口均可编辑
+- 3d 词云：技能图谱循环旋转展示
+- 文档区：本区域用于展示 markdown 格式说明
+
+## 后台编辑
+- 进入 **">
+              
+              <div class="p-4 flex flex-col gap-2 flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="font-semibold text-sm sm:text-base text-text dark:text-text-dark line-clamp-1">使用说明</h3>
+                  <span class="text-[11px] shrink-0 px-2 py-0.5 rounded-btn bg-brand/10 text-brand">使用</span>
+                </div>
+                <div class="text-xs text-muted line-clamp-3 leading-relaxed overflow-hidden flex-1"> 个人效率工作台使用说明
+
+ 主要功能
+- 顶部欢迎横幅 + 主导航：可在主菜单之间切换
+- 海报 SLIDE 窗口：自动轮播关键作品 / 重要告示
+- 八大业务系统：点击卡片进入（子页面持续迭代中）
+- 工作台面板：快捷链接、工作经历、成品展示入口均可编辑
+- 3D 词云：技能图谱循环旋转展示
+- 文档区：本区域用于</div>
+                <div class="mt-auto pt-2 flex items-center justify-between gap-2">
+                  
+                    <span class="text-[11px] text-muted">站内文档</span>
+                  
+                  <span class="text-xs text-brand opacity-0 group-hover:opacity-100 transition">查看 →</span>
+                </div>
+              </div>
+            </article>
+          
+        </div>
+      </div>
+      <button class="doc-nav" data-dir="next" title="下一项" aria-label="下一项">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      
+        <div class="doc-dots">
+          
+            <button class="doc-dot active" data-idx="0" title="AI硬件训练营"></button>
+          
+            <button class="doc-dot " data-idx="1" title="使用说明"></button>
+          
+        </div>
+      
+    </div>
+  
+</section>
+
+<!-- 文档全文弹窗（点击卡片时弹出原始 Markdown 渲染） -->
+<div id="docModal" class="hidden fixed inset-0 z-[60] items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+  <div class="w-full max-w-3xl max-h-[85vh] overflow-auto rounded-card bg-card dark:bg-card-dark border border-divider dark:border-divider-dark shadow-card dark:shadow-card-dark">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-divider dark:border-divider-dark sticky top-0 bg-card dark:bg-card-dark">
+      <h3 id="docModalTitle" class="font-semibold"></h3>
+      <button class="doc-modal-close w-8 h-8 rounded-btn hover:bg-bg dark:hover:bg-bg-dark flex items-center justify-center text-muted hover:text-text dark:hover:text-text-dark text-xl leading-none">&times;</button>
+    </div>
+    <div id="docModalBody" class="p-6 prose dark:prose-invert max-w-none"></div>
+  </div>
+</div>
+
+<footer class="border-t border-divider dark:border-divider-dark py-6">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-xs text-muted text-center">
+    本工作台基于 Node.js + Express + SQLite 构建 · 局域网仅供个人使用
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
