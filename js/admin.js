@@ -119,7 +119,8 @@
     ],
     quick_links: [
       { key: 'name', label: '名称', type: 'text', required: true },
-      { key: 'url', label: 'URL', type: 'text', required: true },
+      { key: 'url', label: '内部 URL（自己用）', type: 'text', required: true },
+      { key: 'external_url', label: '对外 URL（导出静态站时使用，可留空）', type: 'text', placeholder: '留空 = 静态站用 # 占位' },
       { key: 'type', label: '类型 (internal/external)', type: 'text', def: 'external' },
       { key: 'icon', label: '图标 key', type: 'text' },
       { key: 'sort_order', label: '排序', type: 'number', def: 1 },
